@@ -2,8 +2,9 @@ let year = 2021
 let month = 11
 let arr = []
 
-let calendar = document.querySelector('#calendar');
-let dates = calendar.querySelector('.calendar_body');
+let calendar = document.querySelector('#calendar')
+let dates = calendar.querySelector('.calendar_body')
+let header = calendar.querySelector('.calendar_header')
 
 draw(year, month, dates)
 
@@ -18,7 +19,73 @@ function draw(year, month, dates) {
     arr = popElems(popElemsNum, arr)
     arr = chunkArr(7, arr)
     createTable(arr, dates)
-    // console.log(dates)
+    createMonthName(month)
+    createHeader(header)
+    console.log(month)
+}
+
+
+//создаём header
+function createHeader(header) {
+    
+    let calendarHeaderWrapper = document.createElement('div')
+    calendarHeaderWrapper.className = 'calendar_header-wrapper'
+    header.append(calendarHeaderWrapper)
+    
+    let calendarHeaderMonth = document.createElement('div')
+    let calendarHeaderYear = document.createElement('div')
+    calendarHeaderMonth.className = 'calendar_header-month'
+    calendarHeaderYear.className = 'calendar_header-year'
+    calendarHeaderWrapper.append(calendarHeaderMonth, calendarHeaderYear)
+
+    calendarHeaderMonth.innerHTML = monthName
+    calendarHeaderYear.innerHTML = year
+
+}
+
+
+//функция создаёт имя месяца на русском языке
+function createMonthName(month) {
+
+    switch (month) {
+        case 0:
+          monthName = 'Январь'
+          break
+        case 1:
+          monthName = 'Февраль'
+          break
+        case 2:
+          monthName = 'Март'
+          break
+        case 3:
+          monthName = 'Апрель'
+          break
+        case 4:
+          monthName = 'Май'
+          break
+        case 5:
+          monthName = 'Июнь'
+          break
+        case 6:
+          monthName = 'Июль'
+          break
+        case 7:
+          monthName = 'Август'
+          break
+        case 8:
+          monthName = 'Сентябрь'
+          break
+        case 9:
+          monthName = 'Октябрь'
+          break
+        case 10:
+          monthName = 'Ноябрь'
+          break
+        case 11:
+          monthName = 'Декабрь'
+          break
+
+    }
 }
 
 //создаём таблицу из массива arr внутри родителя parrents
