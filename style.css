@@ -40,6 +40,12 @@ a {
     border-radius: 3px;
 }
 
+.active {
+    background-color: rgb(57, 50, 59);
+    color: #fff;
+    font-weight: 700;
+}
+
 .calendar_week {
     display: flex;
     justify-content: space-between;
@@ -60,15 +66,32 @@ a {
     margin: 15px 0px;
 }
 
-.calendar_footer-wrapper {
-    display: flex;
-    justify-content: center;
+
+.calendar_header {
+    position: relative;
 }
 
-.calendar_footer-wrapper .calendar_item {
-    margin-right: 15px;
-    padding: 0px 25px;
-    background-color: rgb(206, 206, 206);
-    line-height: 40px;
-    font-weight: 700;
+.calendar_header-prev,
+.calendar_header-next {
+    position: absolute;
+    top: 13px;
+    width: 40px;
+    text-align: center;
+}
+
+.calendar_header-next {
+    right: 20px;
+}
+
+.calendar_header-prev {
+    left: 20px;
+}
+
+.calendar_header img {
+    width: 20px;
+}
+
+.prevarrow {
+    transform: scale(-1, 1);
+
 }
