@@ -1,18 +1,16 @@
-(function(selector) {
-    let arr = []
+(function (selector) {
 
   let calendar = document.querySelector(selector)
-  let dates = calendar.querySelector('.calendar_body')
-  let header = calendar.querySelector('.calendar_header')
 
+  console.log(calendar)
 
   let currentYear = getNowYear()
   let currentMonth = getNowMonth()
   let currentDay = getNowDay()
-  draw(year, month, dates)
+  draw(year, month, selector)
 
 
-  function draw(year, month, dates) {
+  function draw(year, month) {
     let arr = []
 
     const firstDayOfMonth = 1
@@ -22,13 +20,11 @@
     arr = createArr(firstDayOfMonth, lastDayOfMonth)
     arr = shiftElems(shiftElemsNum, arr)
     arr = popElems(popElemsNum, arr)
-    arr = chunkArr(7, arr)  
-    createTable(arr, dates)  
+    arr = chunkArr(7, arr)
 
-    createHeader(header)
-    
-    nextMonth()
-    prevMonth()
+    createTable(arr, calendar)
+    createWeekDays(calendar)
+    createHeader(calendar)
 
   }
 
@@ -51,23 +47,23 @@
 
 
   //функция стрелочки переключения на следующий месяц
-  function nextMonth() {
+  function nextMonth(parent) {
 
     //создаём стрелку вперёд
     let nextArrow = document.createElement('a')
     nextArrow.className = 'calendar_header-next'
     nextArrow.href = '#'
-    header.append(nextArrow)
+    parent.append(nextArrow)
     let nextArrowItem = document.createElement('img')
     nextArrowItem.className = 'nextarrow'
     nextArrowItem.src = '/calendar/images/arrow.png'
     nextArrow.append(nextArrowItem)
-    
+
     let monthField = calendar.querySelector('.calendar_header-month')
     let yearField = calendar.querySelector('.calendar_header-year')
 
     nextArrow.addEventListener('click', () => {
-      
+
       month++;
 
       if (month > 11) {
@@ -79,7 +75,7 @@
       monthField.innerHTML = monthName;
       yearField.innerHTML = year;
 
-      draw(year, month, dates)
+      draw(year, month, selector)
 
     });
 
@@ -87,16 +83,16 @@
 
 
   //функция стрелочки переключения на предыдущий месяц
-  function prevMonth() {
+  function prevMonth(parent) {
 
     //создаём стрелку назад
     let prevArrow = document.createElement('a')
     prevArrow.className = 'calendar_header-prev'
     prevArrow.href = '#'
-    header.append(prevArrow)
+    parent.append(prevArrow)
     let prevArrowItem = document.createElement('img')
     prevArrowItem.className = 'prevarrow'
-    prevArrowItem.src = '/calendar/images/arrow.png' 
+    prevArrowItem.src = '/calendar/images/arrow.png'
     prevArrow.append(prevArrowItem)
 
 
@@ -114,8 +110,8 @@
       createMonthName(month)
       monthField.innerHTML = monthName;
       yearField.innerHTML = year;
-      
-      draw(year, month, dates)
+
+      draw(year, month, selector)
 
     });
 
@@ -123,15 +119,17 @@
 
 
   //создаём header
-  function createHeader(header) {
+  function createHeader(selector) {
 
     createMonthName(month)
 
-    header.innerHTML = ''
+    let calendarHeader = document.createElement('div')
+    calendarHeader.className = 'calendar_header'
+    selector.prepend(calendarHeader)
 
     let calendarHeaderWrapper = document.createElement('div')
     calendarHeaderWrapper.className = 'calendar_header-wrapper'
-    header.append(calendarHeaderWrapper)
+    calendarHeader.append(calendarHeaderWrapper)
 
     let calendarHeaderMonth = document.createElement('div')
     let calendarHeaderYear = document.createElement('div')
@@ -141,6 +139,9 @@
 
     calendarHeaderMonth.innerHTML = monthName
     calendarHeaderYear.innerHTML = year
+
+    nextMonth(calendarHeader)
+    prevMonth(calendarHeader)
 
   }
 
@@ -189,22 +190,49 @@
     }
   }
 
+  function createWeekDays(selector) {
+    
+    let weekDaysArr = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+
+    let calendarWeek = document.createElement('ul')
+    calendarWeek.className = 'calendar_week'
+    selector.prepend(calendarWeek)
+    
+    for (let i = 0; i < 7; i++) {
+
+      let calendarItem = document.createElement('div')
+      calendarItem.className = 'calendar_item'
+      calendarWeek.append(calendarItem)
+
+      let calendarWeekDay = document.createElement('li')
+      calendarWeekDay.className = 'calendar_body-day'
+      calendarItem.append(calendarWeekDay)
+
+      calendarWeekDay.innerHTML = weekDaysArr[i]
+  
+    }
+  }
+
 
   //создаём таблицу из массива arr внутри родителя parrents
-  function createTable(arr, dates) {
+  function createTable(arr, selector) {
 
-    dates.innerHTML = '';
+    selector.innerHTML = ''
+
+    let calendarBody = document.createElement('div')
+    calendarBody.className = 'calendar_body'
+    selector.append(calendarBody)
 
     for (let i = 0; i < arr.length; i++) {
 
       let calendarBodyRow = document.createElement('ul')
       calendarBodyRow.className = 'calendar_body-row'
-      dates.append(calendarBodyRow)
+      calendarBody.append(calendarBodyRow)
 
       for (let j = 0; j < arr[i].length; j++) {
 
         let calendarItem = document.createElement('div')
-        
+
         if (arr[i][j] == currentDay && year == currentYear && month == currentMonth) {
           calendarItem.className = 'calendar_item active'
         } else {
